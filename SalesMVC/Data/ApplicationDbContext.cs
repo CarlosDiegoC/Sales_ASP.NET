@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SalesMVC.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SalesMVC.Data
 {
@@ -13,8 +10,8 @@ namespace SalesMVC.Data
             : base(options)
         {
         }
-        //APLICAR AQUI OS DBSETS.
-        
-        public DbSet<SalesMVC.Models.Department> Department { get; set; }
+        public DbSet<Department> Department { get; set; }
+        public DbSet<Seller> Sellers { get; set; }
+        public DbSet<SalesRecord> Sales { get; set; }
     }
 }
