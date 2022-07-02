@@ -10,7 +10,7 @@ namespace SalesMVC.Data
             : base(options)
         {
         }
-        public DbSet<Department> Department { get; set; }
+        public DbSet<Department> Departments { get; set; }
         public DbSet<Seller> Sellers { get; set; }
         public DbSet<SalesRecord> Sales { get; set; }
     }
