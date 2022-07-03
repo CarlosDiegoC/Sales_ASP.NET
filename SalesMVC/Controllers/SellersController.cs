@@ -38,12 +38,12 @@ namespace SalesMVC.Controllers
         public async Task<IActionResult> Create(Seller seller)
         {
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 ViewBag.Departments = await _departmentService.FindAllAsync();
                 return View(seller);
             }
-            
+
             await _sellerService.IsertAsync(seller);
             return RedirectToAction(nameof(Index));
         }
@@ -68,8 +68,16 @@ namespace SalesMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            await _sellerService.RemoveAsync(id);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _sellerService.RemoveAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (IntegrityException e)
+            {
+
+                return RedirectToAction(nameof(Error), new { message = e.Message });
+            }
         }
 
         public async Task<IActionResult> Details(int? id)
