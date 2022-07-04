@@ -37,7 +37,8 @@ namespace SalesMVC.Services
 
         public async Task<List<IGrouping<Department, SalesRecord>>> FindByDateGroupingAsync(DateTime? minDate, DateTime? maxDate)
         {
-            var result = from obj in _context.SalesRecords select obj;
+            var result = _context.SalesRecords.Select(obj => obj);
+
             if (minDate.HasValue)
             {
                 result = result.Where(x => x.Date >= minDate.Value);
@@ -46,15 +47,13 @@ namespace SalesMVC.Services
             {
                 result = result.Where(x => x.Date <= maxDate.Value);
             }
-
-            result = result.Include(x => x.Seller)
+            return result
+                .Include(x => x.Seller)
                 .Include(x => x.Seller.Department)
-                .OrderByDescending(x => x.Date);
-
-
-            var groupedObj = from obj in result group obj by obj.Seller.Department;
-            
-            return await groupedObj.ToListAsync();
+                .OrderByDescending(x => x.Date)
+                .AsEnumerable()
+                .GroupBy(x => x.Seller.Department)
+                .ToList();
         }
     }
 }
